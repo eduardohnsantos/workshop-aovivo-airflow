@@ -2,6 +2,7 @@ from airflow.decorators import task, dag
 from datetime import datetime
 import requests, random, psycopg2
 
+
 @dag(
     dag_id="api_postgres",
     description="pipeline_para_capturar_pokemon",
@@ -11,17 +12,17 @@ import requests, random, psycopg2
 )
 def api_postgres():
 
-    @task(task_id="gerar_numero_aleatorio")
+    @task
     def gerar_numero_aleatorio():
         return random.randint(1, 151)
 
-    @task(task_id="fetch_pokemon_data")
+    @task
     def fetch_pokemon_data(pokemon_id: int):
         url = f"https://pokeapi.co/api/v2/pokemon/{pokemon_id}"
         response = requests.get(url)
         return response.json()
 
-    @task(task_id="add_pokemon_to_db")
+    @task
     def add_pokemon_to_db(pokemon_data: dict):
         conn = psycopg2.connect(
             host="seu_host",
@@ -39,11 +40,11 @@ def api_postgres():
         conn.close()
         return f"Pokemon {pokemon_data['name']} inserido com sucesso!"
 
-    @task(task_id="print_de_sucesso")
+    @task
     def print_de_sucesso(response):
         print(response)
 
-    # Definindo o fluxo
+    # fluxo automático (encadeamento implícito)
     pokemon_id = gerar_numero_aleatorio()
     pokemon_data = fetch_pokemon_data(pokemon_id)
     insert_response = add_pokemon_to_db(pokemon_data)
