@@ -1,18 +1,19 @@
 from airflow import DAG
-from airflow.operators.python import PythonOperator
+from airflow.operators.empty import EmptyOperator
 from datetime import datetime
 
+# DAG de exemplo
+with DAG(
+    dag_id="hello_world_dag",
+    start_date=datetime(2025, 10, 4),
+    schedule="* * * * *",   # ⏱️ Executa a cada 1 minuto
+    catchup=False,
+    tags=["example"],
+) as dag:
 
-def helloWorld():
-        print("Hello World")
+    start = EmptyOperator(task_id="start")
+    hello = EmptyOperator(task_id="hello")
+    end = EmptyOperator(task_id="end")
 
-with DAG(dag_id="hello_world_dag",
-         start_date=datetime(2021,1,1),
-         schedule_interval="@hourly",
-         catchup=False) as dag:
-    
-   
-    task1 = PythonOperator(
-        task_id="hello_world",
-        python_callable=helloWorld)
-
+    # Definindo dependências
+    start >> hello >> end
