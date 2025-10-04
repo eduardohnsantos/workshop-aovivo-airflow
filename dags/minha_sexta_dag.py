@@ -1,5 +1,6 @@
 from time import sleep
 from airflow.decorators import dag, task
+from airflow.models.baseoperator import cross_downstream
 from datetime import datetime
 
 @dag(
@@ -33,6 +34,6 @@ def pipeline():
     t3 = terceira_atividade()
     t4 = quarta_atividade()
 
-    t1 >> t2 >> t3 >> t4
+cross_downstream([t1, t2], [t3, t4])    
 
 pipeline()
