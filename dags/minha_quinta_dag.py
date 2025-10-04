@@ -3,13 +3,13 @@ from airflow.decorators import dag, task
 from datetime import datetime
 
 @dag(
-        dag_id="minha_primeira_dag",
+        dag_id="minha_quinta_pipeline",
         description="minha etl braba",
         schedule="* * * * *",
         start_date=datetime(2025, 10, 4),
         catchup=False,
 )
-def pipeline():
+def minha_quinta_pipeline():
 
     @task
     def primeira_atividade():
@@ -36,4 +36,4 @@ def pipeline():
     t1.set_downstream([t2,t3])
     t3.set_upstream(t4)    
 
-pipeline()
+minha_quinta_pipeline()

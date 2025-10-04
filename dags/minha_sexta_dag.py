@@ -4,13 +4,13 @@ from airflow.models.baseoperator import cross_downstream
 from datetime import datetime
 
 @dag(
-        dag_id="minha_primeira_dag",
+        dag_id="minha_sexta_dag",
         description="minha etl braba",
         schedule="* * * * *",
         start_date=datetime(2025, 10, 4),
         catchup=False,
 )
-def pipeline():
+def minha_sexta_dag():
 
     @task
     def primeira_atividade():
@@ -36,4 +36,4 @@ def pipeline():
 
 cross_downstream([t1, t2], [t3, t4])    
 
-pipeline()
+minha_sexta_dag()
